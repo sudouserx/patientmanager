@@ -1,17 +1,20 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+
 from .managers import CustomUserManager
+
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     username = None
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
-    
+
     objects = CustomUserManager()
 
     def __str__(self):
         return self.email
+
 
 class Patient(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -23,8 +26,9 @@ class Patient(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
+
 class HeartRate(models.Model):
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, db_index= True)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, db_index=True)
     bpm = models.IntegerField()
     timestamp = models.DateTimeField(auto_now_add=True, db_index=True)
 
